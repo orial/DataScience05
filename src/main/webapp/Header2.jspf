@@ -1,0 +1,13 @@
+<%-- Para Welcome.jsp: --%>
+<%@ page pageEncoding="UTF-8" %>
+<link type="text/css" href="css/search.css"/>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+    <a href="Welcome.jsp" class="navbar-brand">Movie Recommender</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="LogoutServlet"><span class="glyphicon glyphicon-log-out"></span> Cerrar sesión</a></li>
+    </ul>
+  </div>
+</nav>

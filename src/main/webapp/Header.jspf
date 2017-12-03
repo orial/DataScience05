@@ -1,0 +1,14 @@
+<%-- Para Home.jsp, Registro.jsp y Login.jsp: --%>
+<%@ page pageEncoding="UTF-8" %>
+<link type="text/css" href="css/search.css"/>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+    <a href="Home.jsp" class="navbar-brand">Movie Recommender</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="Registro.jsp"><span class="glyphicon glyphicon-user"></span> Registrarse</a></li>
+      <li><a href="Login.jsp"><span class="glyphicon glyphicon-log-in"></span> Iniciar sesión</a></li>
+    </ul>
+  </div>
+</nav>
