@@ -13,7 +13,16 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+    <repositories>
+	  <repository>
+	      <snapshots>
+	          <enabled>false</enabled>
+	      </snapshots>
+	      <id>central</id>
+	      <name>bintray</name>
+	      <url>https://jcenter.bintray.com</url>
+	  </repository>
+  </repositories>
     <dependencies>
         <dependency>
             <groupId>javax</groupId>
@@ -21,6 +30,11 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+	    <groupId>info.movito</groupId>
+	    <artifactId>themoviedbapi</artifactId>
+	    <version>1.6</version>
+	</dependency>
     </dependencies>
 
     <build>
