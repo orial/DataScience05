@@ -7,6 +7,7 @@ package servlets;
 
 import auxiliar.DBHelper;
 import auxiliar.IMDBHelper;
+import auxiliar.TMDBHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -87,14 +88,14 @@ public class ViewGuestServlet extends HttpServlet {
         out.println("</div>");
     }
     
-    private void showMovie(PrintWriter out, String title, String IMDBID, float rating)
+    private void showMovie(PrintWriter out, String title, String TMDBID, float rating)
     {
+        String poster = TMDBHelper.getMovieImage(TMDBID);
         //String poster = imdb.getMovieImage(IMDBID);
-        String poster = "https://cdn.cinematerial.com/p/136x/ocaxspoo/dora-imdb-indian-movie-poster-sm.jpg";
-        String image = "<img src=\"" + poster + "\">";
-        out.println("<div style=\"width:200px; align:center; float:left\">");
-        out.println("<div class=\"panel panel-primary\" style=\"width:180px\">");
-        out.println("<div class=\"panel-footer\"><h4>" + title + "</h4></div>");
+        String image = "<img src=\"" + poster + "\" style=\"width:170px; height:200px\">";
+        out.println("<div style=\"width:220px; align:center; float:left; padding-left:20px\">");
+        out.println("<div class=\"panel panel-primary\" style=\"width:200px\">");
+        out.println("<div class=\"panel-footer\" style=\"height:80px\"><h4>" + title + "</h4></div>");
         out.println("<div class=\"panel-body\">" + image + "</div>");
         showRating(out, rating);
         out.println("</div>");
@@ -110,9 +111,9 @@ public class ViewGuestServlet extends HttpServlet {
             while (rs.next())
             {
                 String title=rs.getString("TITLE");
-                String imdb_id=rs.getString("IMDBID");
+                String tmdb=rs.getString("TMDBID");
                 float rating=rs.getFloat("RATING");
-                showMovie(out, title, imdb_id, rating);
+                showMovie(out, title, tmdb, rating);
             }
            
         db.closeDB();
@@ -126,10 +127,6 @@ public class ViewGuestServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-            //RequestDispatcher rd;
-            //rd = getServletContext().getRequestDispatcher("/ViewGuest.jsp");
-            //rd.forward(request, response);
-            
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter())
         {
