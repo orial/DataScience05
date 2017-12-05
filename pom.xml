@@ -20,7 +20,8 @@
 	      </snapshots>
 	      <id>central</id>
 	      <name>bintray</name>
-	      <url>https://jcenter.bintray.com</url>
+	      <!--<url>https://jcenter.bintray.com</url>-->
+              <url>http://repo1.maven.org/maven2</url>
 	  </repository>
   </repositories>
     <dependencies>
@@ -39,6 +40,11 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160810</version>
         </dependency>
     </dependencies>
 

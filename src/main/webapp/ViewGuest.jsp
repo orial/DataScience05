@@ -1,7 +1,7 @@
 <%-- 
-    Document   : Home.jsp
-    Created on : 27-nov-2017, 18:55:54
-    Author     : Joaquin
+    Document   : ViewGuest.jsp
+    Created on : 5-dec-2017
+    Author     : Martin
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -18,7 +18,9 @@
     <body>
         <%@include file="Header.jspf" %>
         <div><p style="color: green"><c:out value="${requestScope.ok}"/></p></div>
-        <h1>ViewGuest - Vista para mostrar las recomendaciones al usuario no registrado</h1>
+        
+        
+        <h1>AAA ViewGuest - Vista para mostrar las recomendaciones al usuario no registrado</h1>
         <a href="ViewGuestServlet">ViewGuestServlet</a>
     </body>
 </html>

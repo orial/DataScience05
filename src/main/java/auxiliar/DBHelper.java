@@ -5,6 +5,7 @@
  */
 package auxiliar;
 
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -21,6 +22,7 @@ public class DBHelper {
     final String userName = "root";
     final String password = "root";
     
+    //USERS
     
     public boolean existsNickname(String nickname){
         boolean res=false;
@@ -42,6 +44,7 @@ public class DBHelper {
         return res;
     }
     
+    
     public int insertUser(String name, String pass, String email){
         int res = 0;
         try {
@@ -61,6 +64,7 @@ public class DBHelper {
         }
         return res;
     }
+    
     
     public String checkLogin(String pass, String email){
         String res="";
@@ -84,4 +88,46 @@ public class DBHelper {
         }
         return res;
     }
+    
+    //MOVIES
+    
+    ResultSet mov_rs = null;
+    PreparedStatement mov_ps = null;
+
+    
+    public ResultSet getRecommendedMovies()
+    {
+        try
+        {
+            Class.forName(driver).newInstance();
+            Connection c = DriverManager.getConnection(url + dbName, userName, password);
+            //Get movies by number of ratings
+            String SQL_NumberOfRatings = "(SELECT *, COUNT(*) AS num_ratings FROM RATING GROUP BY RATING.MOVIEID ) AS rat ";
+            String SQL_Movie = "JOIN MOVIE ON MOVIE.ID = rat.MOVIEID ";
+            String SQL_Link = "JOIN LINK ON LINK.MOVIEID = MOVIE.ID ";
+            String SQL_MovieByNumberOfRatings = "SELECT * FROM " + SQL_NumberOfRatings + SQL_Movie + SQL_Link + "ORDER BY num_ratings DESC";
+            mov_ps = c.prepareStatement(SQL_MovieByNumberOfRatings + " LIMIT 8");
+            mov_rs = mov_ps.executeQuery();
+        }
+        catch (Exception e)
+        {
+            System.err.println("Exception: "+ e.getMessage());
+        }
+        return(mov_rs);
+    }
+
+
+    public void closeDB()
+    {
+        try
+        {
+            mov_rs.close();
+            mov_ps.close();
+        }
+        catch (Exception e)
+        {
+            System.err.println("Exception: "+ e.getMessage());
+        }
+    }
+    
 }
