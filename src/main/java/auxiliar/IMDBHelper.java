@@ -11,7 +11,7 @@ import org.json.*;
  */
 public class IMDBHelper {
     
-    public String getMovieImage(String IMDBID)
+    public static String getMovieImage(String IMDBID)
     {
         String image = new String();
         BufferedReader in = null;
@@ -49,7 +49,7 @@ public class IMDBHelper {
             }
             catch (IOException e)
             {
-            e.printStackTrace();
+                e.printStackTrace();
             }
         }
         return(image);

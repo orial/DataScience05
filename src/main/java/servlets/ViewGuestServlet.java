@@ -24,7 +24,6 @@ import java.sql.ResultSet;
 public class ViewGuestServlet extends HttpServlet {
 
     private DBHelper db = new DBHelper();
-    private IMDBHelper imdb = new IMDBHelper();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -88,10 +87,17 @@ public class ViewGuestServlet extends HttpServlet {
         out.println("</div>");
     }
     
-    private void showMovie(PrintWriter out, String title, String TMDBID, float rating)
+    private void showMovie(PrintWriter out, String title, String IMDBID, String TMDBID, float rating)
     {
         String poster = TMDBHelper.getMovieImage(TMDBID);
-        //String poster = imdb.getMovieImage(IMDBID);
+        if (poster.isEmpty())
+        {
+            poster = IMDBHelper.getMovieImage(IMDBID);
+        }
+        if (poster.isEmpty())
+        {
+            poster = "https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF";
+        }
         String image = "<img src=\"" + poster + "\" style=\"width:170px; height:200px\">";
         out.println("<div style=\"width:220px; align:center; float:left; padding-left:20px\">");
         out.println("<div class=\"panel panel-primary\" style=\"width:200px\">");
@@ -111,14 +117,15 @@ public class ViewGuestServlet extends HttpServlet {
             while (rs.next())
             {
                 String title=rs.getString("TITLE");
+                String imdb=rs.getString("IMDBID");
                 String tmdb=rs.getString("TMDBID");
                 float rating=rs.getFloat("RATING");
-                showMovie(out, title, tmdb, rating);
-            }
-           
+                showMovie(out, title, imdb, tmdb, rating);
+            }           
         db.closeDB();
-        
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             System.err.println("Exception: "+ e.getMessage());
         }
     }
