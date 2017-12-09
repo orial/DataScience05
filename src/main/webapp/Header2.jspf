@@ -1,6 +1,5 @@
 <%-- Para Welcome.jsp: --%>
 <%@ page pageEncoding="UTF-8" %>
-<link type="text/css" href="css/search.css"/>
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">

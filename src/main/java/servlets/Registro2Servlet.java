@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import auxiliar.DBHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -16,10 +17,11 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Joaquin
+ * @author Programar
  */
-public class LogoutServlet extends HttpServlet {
-
+public class Registro2Servlet extends HttpServlet {
+    
+    private DBHelper db = new DBHelper();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,13 +33,43 @@ public class LogoutServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession sesion = request.getSession();
-        sesion.invalidate();
+        int g1 = Integer.parseInt(request.getParameter("Grupo1"));
+        int g2 = Integer.parseInt(request.getParameter("Grupo2"));
+        int g3 = Integer.parseInt(request.getParameter("Grupo3"));
+        int g4 = Integer.parseInt(request.getParameter("Grupo4"));
+        int g5 = Integer.parseInt(request.getParameter("Grupo5"));
+        int g6 = Integer.parseInt(request.getParameter("Grupo6"));
         
-        request.setAttribute("ok", "Sesión cerrada correctamente");
-        RequestDispatcher rd;
-        rd = getServletContext().getRequestDispatcher("/HomeServlet");
-        rd.forward(request, response);
+        int suma = g1 + g2 + g3 + g4 + g5 + g6;
+        System.out.println("SUMA -> "+suma);
+        if(suma!=3){
+            request.setAttribute("error", "No ha dividido correctamente los puntos");
+            RequestDispatcher rd;
+            rd = getServletContext().getRequestDispatcher("/Registro2.jsp");
+            rd.forward(request, response);
+        }else{
+            HttpSession sesion = request.getSession();
+            String nick = (String)sesion.getAttribute("nick");
+            String password = (String)sesion.getAttribute("password");
+            String email = (String)sesion.getAttribute("email");
+            
+            int res = db.insertUser(nick, password, email);
+            if(res==0){
+                request.setAttribute("error", "No se pudo crear el usuario");
+                RequestDispatcher rd;
+                rd = getServletContext().getRequestDispatcher("/Registro2.jsp");
+                rd.forward(request, response);
+            }else{
+                //Usuario creado
+                request.setAttribute("ok", "Usuario "+nick+" creado correctamente");
+                RequestDispatcher rd;
+                rd = getServletContext().getRequestDispatcher("/Login.jsp");
+                rd.forward(request, response);
+            }
+            
+            
+        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

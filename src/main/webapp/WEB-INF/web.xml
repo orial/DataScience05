@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <welcome-file-list>
-        <welcome-file>Home.jsp</welcome-file>
+        <welcome-file>HomeServlet</welcome-file>
     </welcome-file-list>
     <servlet>
         <servlet-name>RegistroServlet</servlet-name>
@@ -16,8 +16,16 @@
         <servlet-class>servlets.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ViewGuestServlet</servlet-name>
-        <servlet-class>servlets.ViewGuestServlet</servlet-class>
+        <servlet-name>Registro2Servlet</servlet-name>
+        <servlet-class>servlets.Registro2Servlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HomeServlet</servlet-name>
+        <servlet-class>servlets.HomeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MovieServlet</servlet-name>
+        <servlet-class>servlets.MovieServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegistroServlet</servlet-name>
@@ -32,8 +40,16 @@
         <url-pattern>/LogoutServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ViewGuestServlet</servlet-name>
-        <url-pattern>/ViewGuestServlet</url-pattern>
+        <servlet-name>Registro2Servlet</servlet-name>
+        <url-pattern>/Registro2Servlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomeServlet</servlet-name>
+        <url-pattern>/HomeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MovieServlet</servlet-name>
+        <url-pattern>/MovieServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

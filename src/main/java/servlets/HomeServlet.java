@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import auxiliar.DBHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -12,14 +13,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Joaquin
  */
-public class LogoutServlet extends HttpServlet {
-
+public class HomeServlet extends HttpServlet {
+    
+    private DBHelper db = new DBHelper();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,13 +32,11 @@ public class LogoutServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession sesion = request.getSession();
-        sesion.invalidate();
-        
-        request.setAttribute("ok", "Sesión cerrada correctamente");
+        request.setAttribute("movies", db.getMainMovies());
         RequestDispatcher rd;
-        rd = getServletContext().getRequestDispatcher("/HomeServlet");
+        rd = getServletContext().getRequestDispatcher("/Home.jsp");
         rd.forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -9,34 +9,55 @@ package auxiliar;
  *
  * @author Joaquin
  */
-import java.util.List;
 
 import info.movito.themoviedbapi.TmdbApi;
 import info.movito.themoviedbapi.TmdbMovies;
-import info.movito.themoviedbapi.TmdbMovies.MovieMethod;
-import info.movito.themoviedbapi.model.Artwork;
 import info.movito.themoviedbapi.model.MovieDb;
 
 public class TMDBHelper
 {
-    private static TmdbApi api = new TmdbApi("564bbbc79305ae0ff400251a41278d9b");
-    private static TmdbMovies movies = api.getMovies();
+    private TmdbApi api = new TmdbApi("564bbbc79305ae0ff400251a41278d9b");
+    private TmdbMovies movies = api.getMovies();
     
-    public static String getMovieImage(String TMDBID)
-    {
+    public String getMovieTitle(String TMDBID){
         int tmdb = Integer.valueOf(TMDBID);
-        MovieDb pelicula = movies.getMovie(tmdb, "", MovieMethod.images);
-        List<Artwork> images = pelicula.getImages();
-        Artwork aw = images.get(0);
-        String url = "https://image.tmdb.org/t/p/original"+aw.getFilePath();
+        MovieDb pelicula = movies.getMovie(tmdb, "es");
+        if(pelicula!=null){
+            return pelicula.getTitle();
+        }else{
+            pelicula = movies.getMovie(tmdb, "");
+        }
+        return pelicula.getTitle();
+    }
+    public String getMovieImage(String TMDBID){
+        int tmdb = Integer.valueOf(TMDBID);
+        String url="";
+        MovieDb pelicula = movies.getMovie(tmdb, "es");
+        if(pelicula!=null){
+            url = "https://image.tmdb.org/t/p/original"+pelicula.getPosterPath();
+            return url;
+        }else{
+            pelicula = movies.getMovie(tmdb, "");
+        }
+        url = "https://image.tmdb.org/t/p/original"+pelicula.getPosterPath();
         return url;
     }
-        /*
-	public static void main(String[] args) {
-		TmdbApi api = new TmdbApi("564bbbc79305ae0ff400251a41278d9b");
-		TmdbMovies peliculas = api.getMovies();
-		System.out.println("Toy Story --> "+getMoviePoster(peliculas, 862)); //Toy Story
-		System.out.println("Women of '69 --> "+getMoviePoster(peliculas, 410803)); //Women of '69
-	}
-        */
+    
+    public String getMovieOverview(String TMDBID){
+        int tmdb = Integer.valueOf(TMDBID);
+        MovieDb pelicula = movies.getMovie(tmdb, "es");
+        if(pelicula!=null){
+            return pelicula.getOverview();
+        }else{
+            pelicula = movies.getMovie(tmdb, "");
+        }
+        return pelicula.getOverview();
+    }
+    
+    public String getMovieYear(String TMDBID){
+        int tmdb = Integer.valueOf(TMDBID);
+        MovieDb pelicula = movies.getMovie(tmdb, "");
+        String year = pelicula.getReleaseDate();
+        return year.substring(0,4);
+    }
 }

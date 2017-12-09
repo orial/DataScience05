@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -34,6 +35,7 @@ public class RegistroServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sesion = request.getSession();
         String nickName = request.getParameter("nickNameInput");
         String email = request.getParameter("emailInput");
         String password = request.getParameter("passwordInput");
@@ -46,11 +48,10 @@ public class RegistroServlet extends HttpServlet {
                 error = "Las contraseñas deben ser iguales";
             }else if(db.existsNickname(nickName)){
                 error = "Nick ya existente";
+            }else if(db.existsEmail(email)){
+                error = "El email proporcionado ya está en uso";
             }else{
-                int res = db.insertUser(nickName, password, email);
-                if(res==0){
-                    error = "No se pudo crear el usuario";
-                }
+                //Realizar el registro en Registro2Servlet.java
             }
         }else{
             error = "Complete todos los campos obligatorios";
@@ -62,10 +63,12 @@ public class RegistroServlet extends HttpServlet {
             rd = getServletContext().getRequestDispatcher("/Registro.jsp");
             rd.forward(request, response);
         }else{
-            //Crear usuario
-            request.setAttribute("ok", "Usuario "+nickName+" creado correctamente");
+            //Siguiente paso del registro
+            sesion.setAttribute("nick", nickName);
+            sesion.setAttribute("email", email);
+            sesion.setAttribute("password", password);
             RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/Login.jsp");
+            rd = getServletContext().getRequestDispatcher("/Registro2.jsp");
             rd.forward(request, response);
         }
     }

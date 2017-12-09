@@ -4,15 +4,13 @@
     Author     : Joaquin
 --%>
 
+<!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <title>Registro</title>
     </head>
     <body>
@@ -20,7 +18,7 @@
         <div class="container theme-showcase" role="main">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h1 class="panel-title">Registrarse</h1>
+                    <h1 class="panel-title">Registro - Introduzca sus datos</h1>
                 </div>
                 <div class="panel-body">
                     <form class="form-signin" action = "RegistroServlet" method="POST">
@@ -58,12 +56,14 @@
                             </table>
                             <div><p style="color: red"><c:out value="${requestScope.error}"/></p></div>
                             <div class="botones">
-                                <button type="submit" class="btn btn-primary">Crear cuenta</button>
+                                <button type="submit" class="btn btn-primary">Continuar</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </body>
 </html>

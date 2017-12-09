@@ -5,6 +5,8 @@
  */
 package servlets;
 
+import auxiliar.DBHelper;
+import auxiliar.TMDBHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -12,14 +14,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Joaquin
+ * @author Programar
  */
-public class LogoutServlet extends HttpServlet {
-
+public class MovieServlet extends HttpServlet {
+    
+    private DBHelper db = new DBHelper();
+    private TMDBHelper tmdbhelper = new TMDBHelper();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,12 +34,25 @@ public class LogoutServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession sesion = request.getSession();
-        sesion.invalidate();
+        String movieid = request.getParameter("movieid");
+        String rating = request.getParameter("rating");
+        System.out.println(rating);
         
-        request.setAttribute("ok", "Sesión cerrada correctamente");
+        //Link de la pelicula en tmdb
+        String link = db.getMovieLink(movieid);
+        //Recuperamos titulo, poster, resumen y año
+        String titulo = tmdbhelper.getMovieTitle(link);
+        String poster = tmdbhelper.getMovieImage(link);
+        String resumen = tmdbhelper.getMovieOverview(link);
+        String year = tmdbhelper.getMovieYear(link);
+        
+        request.setAttribute("titulo", titulo);
+        request.setAttribute("poster", poster);
+        request.setAttribute("resumen", resumen);
+        request.setAttribute("year", year);
+        request.setAttribute("rating", rating);
         RequestDispatcher rd;
-        rd = getServletContext().getRequestDispatcher("/HomeServlet");
+        rd = getServletContext().getRequestDispatcher("/MovieDetails.jsp");
         rd.forward(request, response);
     }
 

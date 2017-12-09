@@ -34,11 +34,11 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
-        String email = request.getParameter("email");
+        String text = request.getParameter("text");
         String password = request.getParameter("password");
         
         String error = null;
-        String user = db.checkLogin(password, email);
+        String user = db.checkLogin(password, text);
         
         if(!user.equals("")){
             sesion.setAttribute("user", user);
