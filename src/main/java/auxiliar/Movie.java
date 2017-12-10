@@ -15,6 +15,14 @@ public class Movie {
     private String poster;
     private float rating;
     
+    public Movie(int id){
+        this.id = id;
+    }
+    public Movie(int id, float rating){
+        this.id = id;
+        this.rating=rating;
+    }
+
     public Movie(int id, String title, String poster, float rating){
         this.id = id;
         this.title = title;

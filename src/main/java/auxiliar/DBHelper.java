@@ -88,7 +88,27 @@ public class DBHelper {
         return res;
     }
     
-    
+     public String getIDUsuario(String name){
+        String res="";
+        try {
+            Class.forName(driver).newInstance();
+            Connection c = DriverManager.getConnection(url + dbName, userName, password);
+            
+            PreparedStatement stmt = c.prepareStatement("SELECT ID FROM USER WHERE NAME = ?");
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                return rs.getString("ID");
+            }
+            
+            rs.close();
+            stmt.close();
+
+        } catch (Exception e) {
+            System.err.println("Exception: "+ e.getMessage());
+        }
+        return res;
+    }
     public String checkLogin(String pass, String text){
         String res="";
         try {
@@ -202,5 +222,48 @@ public class DBHelper {
         }
         return link;
     }
-    
+     public Movie getMovieRanking(String movieid){
+         Movie movie = new Movie(Integer.parseInt(movieid));
+        try{
+             Class.forName(driver).newInstance();
+            Connection c = DriverManager.getConnection(url + dbName, userName, password);
+            PreparedStatement stmt = c.prepareStatement("SELECT sum(RATING.RATING)/COUNT(*) AS mean_ratings FROM RATING  WHERE MOVIEID = ? GROUP BY RATING.MOVIEID  ORDER BY mean_ratings");
+            stmt.setString(1,movieid );
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                //Id de la pelicula
+                String id = movieid;
+                //Media de las valoraciones
+                String media = rs.getString("mean_ratings");
+                //Solo dos decimales
+                media = media.substring(0, 4);
+                //Creamos la pelicula
+                movie = new Movie(Integer.parseInt(id), Float.parseFloat(media));
+            }
+            rs.close();
+            stmt.close();
+        }catch (Exception e){
+            System.err.println("Exception: "+ e.getMessage());
+        }
+        return movie;
+    }
+    public  List <String> getMoviesIDValoradasUsuario(String userid){
+        List <String> IDmovies = new ArrayList<String>();
+        try{
+            Class.forName(driver).newInstance();
+            Connection c = DriverManager.getConnection(url + dbName, userName, password);
+            PreparedStatement stmt = c.prepareStatement("SELECT MOVIEID FROM RATING WHERE USERID = ?");
+            stmt.setString(1,userid );
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                String id = rs.getString("MOVIEID");
+                IDmovies.add(id);
+            }
+            rs.close();
+            stmt.close();
+        }catch (Exception e){
+            System.err.println("Exception: "+ e.getMessage());
+        }
+        return IDmovies;
+    }
 }

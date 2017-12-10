@@ -6,14 +6,19 @@
 package servlets;
 
 import auxiliar.DBHelper;
+import auxiliar.Movie;
+import auxiliar.RHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.rosuda.REngine.REXP;
+import org.rosuda.REngine.Rserve.*;
 
 /**
  *
@@ -22,6 +27,7 @@ import javax.servlet.http.HttpSession;
 public class LoginServlet extends HttpServlet {
     
     private DBHelper db = new DBHelper();
+    private RHelper r = new RHelper();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,6 +48,8 @@ public class LoginServlet extends HttpServlet {
         
         if(!user.equals("")){
             sesion.setAttribute("user", user);
+            String userid = db.getIDUsuario(user);
+
             RequestDispatcher rd;
             rd = getServletContext().getRequestDispatcher("/Welcome.jsp");
             rd.forward(request, response);
