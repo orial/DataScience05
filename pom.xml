@@ -32,6 +32,26 @@
             <type>jar</type>
         </dependency>
         <dependency>
+            <groupId>JRI</groupId>
+            <artifactId>JRI</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>JRIEngine</groupId>
+            <artifactId>JRIEngine</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>REngine</groupId>
+            <artifactId>REngine</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>RServe</groupId>
+            <artifactId>RServe</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
