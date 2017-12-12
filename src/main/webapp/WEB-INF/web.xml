@@ -27,6 +27,10 @@
         <servlet-name>MovieServlet</servlet-name>
         <servlet-class>servlets.MovieServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RateMovieServlet</servlet-name>
+        <servlet-class>servlets.RateMovieServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegistroServlet</servlet-name>
         <url-pattern>/RegistroServlet</url-pattern>
@@ -50,6 +54,10 @@
     <servlet-mapping>
         <servlet-name>MovieServlet</servlet-name>
         <url-pattern>/MovieServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RateMovieServlet</servlet-name>
+        <url-pattern>/RateMovieServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

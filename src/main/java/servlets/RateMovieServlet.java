@@ -14,13 +14,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Joaquin
  */
-public class MovieServlet extends HttpServlet {
-    
+public class RateMovieServlet extends HttpServlet {
+
     private DBHelper db = new DBHelper();
     private TMDBHelper tmdbhelper = new TMDBHelper();
     /**
@@ -35,9 +36,6 @@ public class MovieServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String movieid = request.getParameter("movieid");
-        String rating = request.getParameter("rating");
-        System.out.println(rating);
-        
         //Link de la pelicula en tmdb
         String link = db.getMovieLink(movieid);
         //Recuperamos titulo, poster, resumen y año
@@ -50,9 +48,11 @@ public class MovieServlet extends HttpServlet {
         request.setAttribute("poster", poster);
         request.setAttribute("resumen", resumen);
         request.setAttribute("year", year);
-        request.setAttribute("rating", rating);
+        request.setAttribute("movieid", movieid);
+        //request.setAttribute("rating",db.getMovieMeanVal(movieid));
+        //request.setAttribute("myrating", db.getMovieRatedByUser(userid, movieid));
         RequestDispatcher rd;
-        rd = getServletContext().getRequestDispatcher("/MovieDetails.jsp");
+        rd = getServletContext().getRequestDispatcher("/RateMovie.jsp");
         rd.forward(request, response);
     }
 

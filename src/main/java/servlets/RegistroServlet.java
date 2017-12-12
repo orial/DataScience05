@@ -67,6 +67,16 @@ public class RegistroServlet extends HttpServlet {
             sesion.setAttribute("nick", nickName);
             sesion.setAttribute("email", email);
             sesion.setAttribute("password", password);
+            //Hay que obtener las 5 películas con mejor valoración media de cada
+            //clúster, que tengan como mínimo
+            int clusters = db.getNumberClusters(); //Número de clústers
+            sesion.setAttribute("clusters", clusters);
+            //5 películas de cada clúster
+            for(int i=1; i<=clusters; i++){
+                System.out.println("");
+                sesion.setAttribute("grupo"+i, db.getMainMoviesFromCluster(i));
+            }
+            
             RequestDispatcher rd;
             rd = getServletContext().getRequestDispatcher("/Registro2.jsp");
             rd.forward(request, response);
