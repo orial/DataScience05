@@ -31,6 +31,14 @@
         <servlet-name>RateMovieServlet</servlet-name>
         <servlet-class>servlets.RateMovieServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SaveRatingServlet</servlet-name>
+        <servlet-class>servlets.SaveRatingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MetodoServlet</servlet-name>
+        <servlet-class>servlets.MetodoServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegistroServlet</servlet-name>
         <url-pattern>/RegistroServlet</url-pattern>
@@ -59,9 +67,17 @@
         <servlet-name>RateMovieServlet</servlet-name>
         <url-pattern>/RateMovieServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveRatingServlet</servlet-name>
+        <url-pattern>/SaveRatingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MetodoServlet</servlet-name>
+        <url-pattern>/MetodoServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            300
         </session-timeout>
     </session-config>
 </web-app>

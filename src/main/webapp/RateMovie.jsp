@@ -68,6 +68,13 @@
         <script>
             $('.rating').on('change', function (){
                 $(this).next('.label').text($(this).val());
+                $.ajax({
+                    url:'SaveRatingServlet',
+                    data:{val:$(this).val(),
+                    movieid:<%=movieid%>},
+                    type:'get',
+                    cache:false
+                });
             });
         </script> 
     </body>

@@ -6,7 +6,18 @@
     <a href="Welcome.jsp" class="navbar-brand">Movie Recommender</a>
     </div>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="LogoutServlet"><span class="glyphicon glyphicon-log-out"></span> Cerrar sesión</a></li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown">Cambiar método de recomendación
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="MetodoServlet?metodo=GR">Grupos seleccionados</a></li>
+              <li><a href="MetodoServlet?metodo=CO">Filtrado basado en contenido</a></li>
+              <li><a href="MetodoServlet?metodo=CU">Filtrado colaborativo basado en usuario</a></li>
+              <li><a href="MetodoServlet?metodo=CI">Filtrado colaborativo basado en item</a></li>
+              <li><a href="MetodoServlet?metodo=FS">Filtrado supervisado</a></li>
+            </ul>
+        </li>
+        <li><a href="LogoutServlet"><span class="glyphicon glyphicon-log-out"></span> Cerrar sesión</a></li>
     </ul>
   </div>
 </nav>

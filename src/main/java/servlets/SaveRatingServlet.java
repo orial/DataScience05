@@ -6,31 +6,21 @@
 package servlets;
 
 import auxiliar.DBHelper;
-import auxiliar.Movie;
-import auxiliar.RHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.rosuda.REngine.REXP;
-import org.rosuda.REngine.REXPMismatchException;
-import org.rosuda.REngine.Rserve.*;
 
 /**
  *
- * @author Joaquin
+ * @author Programar
  */
-public class LoginServlet extends HttpServlet {
+public class SaveRatingServlet extends HttpServlet {
     
     private DBHelper db = new DBHelper();
-    private RHelper r = new RHelper();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,45 +33,11 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
-        String text = request.getParameter("text");
-        String password = request.getParameter("password");
-        
-        String error = null;
-        String user = db.checkLogin(password, text);
-        
-        if(!user.equals("")){
-            sesion.setAttribute("user", user);
-            String userid = db.getIDUsuario(user);
-            
-            sesion.setAttribute("userid", userid);
-            String method = db.getUserMethod(userid);
-            List<Movie> movies;
-            switch (method){
-                case "GR": //Grupos resultantes de la clusterización
-                    String clusters = db.getUserClusters(userid);
-                    movies = db.getRecommendationByGenres(clusters);
-                    sesion.setAttribute("movies", movies);
-                    break;
-                case "CO": //Filtrado basado en contenido
-                    break;
-                case "CU": //Filtrado colaborativo basado en usuario
-                    break;
-                case "CI": //Filtrado colaborativo basado en item
-                    break;
-                case "FS": //Filtrado supervisado
-                    break;
-                default:
-                    break;
-            }
-            RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/Welcome.jsp");
-            rd.forward(request, response);
-        }else{
-            request.setAttribute("error", "Datos incorrectos");
-            RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/Login.jsp");
-            rd.forward(request, response);
-        }
+        String userid = (String)sesion.getAttribute("userid");
+        String movieid = request.getParameter("movieid");
+        String val = request.getParameter("val");
+        System.out.println(userid+" "+movieid+" "+val);
+        db.modifyValoration(userid, movieid, val);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

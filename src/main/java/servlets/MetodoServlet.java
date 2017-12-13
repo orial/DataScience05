@@ -7,30 +7,23 @@ package servlets;
 
 import auxiliar.DBHelper;
 import auxiliar.Movie;
-import auxiliar.RHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.rosuda.REngine.REXP;
-import org.rosuda.REngine.REXPMismatchException;
-import org.rosuda.REngine.Rserve.*;
 
 /**
  *
- * @author Joaquin
+ * @author Programar
  */
-public class LoginServlet extends HttpServlet {
+public class MetodoServlet extends HttpServlet {
     
     private DBHelper db = new DBHelper();
-    private RHelper r = new RHelper();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,19 +36,10 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
-        String text = request.getParameter("text");
-        String password = request.getParameter("password");
-        
-        String error = null;
-        String user = db.checkLogin(password, text);
-        
-        if(!user.equals("")){
-            sesion.setAttribute("user", user);
-            String userid = db.getIDUsuario(user);
-            
-            sesion.setAttribute("userid", userid);
-            String method = db.getUserMethod(userid);
-            List<Movie> movies;
+        String userid = (String)sesion.getAttribute("userid");
+        String method = request.getParameter("metodo");
+        db.modifyMethod(userid, method); //Se modifica el método del usuario
+        List<Movie> movies;
             switch (method){
                 case "GR": //Grupos resultantes de la clusterización
                     String clusters = db.getUserClusters(userid);
@@ -76,12 +60,6 @@ public class LoginServlet extends HttpServlet {
             RequestDispatcher rd;
             rd = getServletContext().getRequestDispatcher("/Welcome.jsp");
             rd.forward(request, response);
-        }else{
-            request.setAttribute("error", "Datos incorrectos");
-            RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/Login.jsp");
-            rd.forward(request, response);
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -11,7 +11,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,11 +80,12 @@ public class DBHelper {
             Class.forName(driver).newInstance();
             Connection c = DriverManager.getConnection(url + dbName, userName, password);
             
-            PreparedStatement stmt = c.prepareStatement("INSERT INTO USER (NAME, PASSWORD, EMAIL, CLUSTERS) VALUES (?, ?, ?, ?)");
+            PreparedStatement stmt = c.prepareStatement("INSERT INTO USER (NAME, PASSWORD, EMAIL, CLUSTERS, TIPORECOM) VALUES (?, ?, ?, ?, ?)");
             stmt.setString(1, name);
             stmt.setString(2, pass);
             stmt.setString(3, email);
             stmt.setString(4, clusters);
+            stmt.setString(5, "GR"); //Por defecto siempre se le recomendarán películas de los grupos que elegió en el registro
             
             res = stmt.executeUpdate();
             
@@ -482,24 +485,51 @@ public class DBHelper {
         return res;
     }
     
-    public int modifyValoration(String userid, String val){
-        int res = 0;
+    public void modifyValoration(String userid, String movieid, String val){
         try {
             Class.forName(driver).newInstance();
             Connection c = DriverManager.getConnection(url + dbName, userName, password);
+            PreparedStatement stmt;
+            if(this.getMovieRatedByUser(userid, movieid)==0f){ //Si no había valoración, insertar
+                stmt = c.prepareStatement("INSERT INTO RATING (USERID, MOVIEID, RATING, FECHAVALORACION) VALUES (?, ?, ?, ?)");
+                stmt.setString(1, userid);
+                stmt.setString(2, movieid);
+                stmt.setString(3, val);
+                Date date = new Date();
+                String modifiedDate= new SimpleDateFormat("yyyy-MM-dd").format(date);
+                System.out.println(modifiedDate);
+                stmt.setString(4, modifiedDate);
+                stmt.executeUpdate();
+            }else{
+                stmt = c.prepareStatement("UPDATE RATING SET RATING = ?, FECHAVALORACION = ? WHERE USERID = ? AND MOVIEID = ?");
+                stmt.setString(1, val);
+                Date date = new Date();
+                String modifiedDate= new SimpleDateFormat("yyyy-MM-dd").format(date);
+                stmt.setString(2, modifiedDate);
+                stmt.setString(3, userid);
+                stmt.setString(4, movieid);
+                stmt.executeUpdate();
+            }
             
-            PreparedStatement stmt = c.prepareStatement("INSERT INTO USER (NAME, PASSWORD, EMAIL, CLUSTERS) VALUES (?, ?, ?, ?)");
-            /*stmt.setString(1, name);
-            stmt.setString(2, pass);
-            stmt.setString(3, email);
-            stmt.setString(4, clusters);*/
-            
-            res = stmt.executeUpdate();
             
             stmt.close();
         }catch (Exception e) {
             System.err.println("Exception: "+ e.getMessage());
         }
-        return res;
+    }
+    
+    public void modifyMethod(String userid, String method){
+        try {
+            Class.forName(driver).newInstance();
+            Connection c = DriverManager.getConnection(url + dbName, userName, password);
+            PreparedStatement stmt = c.prepareStatement("UPDATE USER SET TIPORECOM = ? WHERE ID = ?");
+            stmt.setString(1,method);
+            stmt.setString(2, userid);
+            stmt.executeUpdate();
+            
+            stmt.close();
+        }catch (Exception e) {
+            System.err.println("Exception: "+ e.getMessage());
+        }
     }
 }
