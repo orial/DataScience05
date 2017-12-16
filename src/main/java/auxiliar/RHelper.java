@@ -75,6 +75,17 @@ public class RHelper {
         }
     }
     
+    public void RecalcularSupervisado(){
+          RConnection connection=null;
+        try{
+            connection = new RConnection();
+            connection.eval("source('C:\\\\R\\\\modeloSupervisado_randomForest.R')");
+            connection.close();
+        }catch(RserveException e){
+              e.printStackTrace();
+        }  
+     }
+    
     public int[] FiltradoColaborativoBasadoUsuario(String usuarioID){
           RConnection connection=null;
           int[] movies=null;
@@ -121,7 +132,7 @@ public class RHelper {
           int[] movies=null;
         try{
             connection = new RConnection();
-            connection.eval("source('C:\\\\R\\\\modeloSupervisado_randomForest.R')");
+            connection.eval("source('C:\\\\R\\\\modeloSupervisado.R')");
             movies =connection.eval("predictUser("+ usuarioID+")").asIntegers();
             connection.close();
         }catch(REXPMismatchException | RserveException e){
