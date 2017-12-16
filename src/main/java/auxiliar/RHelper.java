@@ -41,6 +41,29 @@ public class RHelper {
               e.printStackTrace();
         }  
     }
+    
+    public void RecalcularProfiles(){
+        RConnection connection=null;
+        try{
+            connection = new RConnection();
+            connection.eval("source('C:\\\\R\\\\profiles.R')");
+            connection.close();
+        }catch(RserveException e){
+              e.printStackTrace();
+        }
+    }
+    
+    public void RecalcularUsersCluster(){
+        RConnection connection=null;
+        try{
+            connection = new RConnection();
+            connection.eval("source('C:\\\\R\\\\modeloSupervisado_clusters_users.R')");
+            connection.close();
+        }catch(RserveException e){
+              e.printStackTrace();
+        }
+    }
+    
     public int[] FiltradoColaborativoBasadoUsuario(String usuarioID){
           RConnection connection=null;
           int[] movies=null;
@@ -61,6 +84,34 @@ public class RHelper {
             connection = new RConnection();
             connection.eval("source('C:\\\\R\\\\PeliculasMejoresFiltradoColaboratiboBasadoItem.R')");
             movies =connection.eval("multi_return("+ usuarioID+")").asIntegers();
+            connection.close();
+        }catch(REXPMismatchException | RserveException e){
+              e.printStackTrace();
+        }  
+         return movies;
+     }
+     
+     public int[] BasadoContenido(String usuarioID){
+          RConnection connection=null;
+          int[] movies=null;
+        try{
+            connection = new RConnection();
+            connection.eval("source('C:\\\\R\\\\content_based_jaccard.R')");
+            movies =connection.eval("content_based_jacc("+ usuarioID+")").asIntegers();
+            connection.close();
+        }catch(REXPMismatchException | RserveException e){
+              e.printStackTrace();
+        }  
+         return movies;
+     }
+     
+     public int[] AprendizajeSupervisado(String usuarioID){
+          RConnection connection=null;
+          int[] movies=null;
+        try{
+            connection = new RConnection();
+            connection.eval("source('C:\\\\R\\\\modeloSupervisado_randomForest.R')");
+            movies =connection.eval("predictUser("+ usuarioID+")").asIntegers();
             connection.close();
         }catch(REXPMismatchException | RserveException e){
               e.printStackTrace();
