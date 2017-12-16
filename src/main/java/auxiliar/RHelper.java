@@ -42,6 +42,17 @@ public class RHelper {
         }  
     }
     
+    public void RecalcularIniCluster(){
+        RConnection connection=null;
+        try{
+            connection = new RConnection();
+            connection.eval("source('C:\\\\R\\\\Kmeans.R')");
+            connection.close();
+        }catch(RserveException e){
+              e.printStackTrace();
+        }
+    }
+    
     public void RecalcularProfiles(){
         RConnection connection=null;
         try{
