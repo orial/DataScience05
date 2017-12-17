@@ -56,6 +56,7 @@ public class LoginServlet extends HttpServlet {
             sesion.setAttribute("userid", userid);
             String method = db.getUserMethod(userid);
             List<Movie> movies;
+            int[] moviesid;
             switch (method){
                 case "GR": //Grupos resultantes de la clusterización
                     String clusters = db.getUserClusters(userid);
@@ -63,12 +64,28 @@ public class LoginServlet extends HttpServlet {
                     sesion.setAttribute("movies", movies);
                     break;
                 case "CO": //Filtrado basado en contenido
+                    moviesid = r.BasadoContenido(userid);
+                    movies = db.getMoviesById(moviesid);
+                    sesion.setAttribute("movies", movies);
                     break;
                 case "CU": //Filtrado colaborativo basado en usuario
+                    //Se comenta porque tarda mucho en tiempo de ejecución
+                    //r.RecalcularClusterFiltradoColaborativoUser();
+                    moviesid = r.FiltradoColaborativoBasadoUsuario(userid);
+                    movies = db.getMoviesById(moviesid);
+                    sesion.setAttribute("movies", movies);
                     break;
                 case "CI": //Filtrado colaborativo basado en item
+                    //Se comenta porque tarda mucho en tiempo de ejecución
+                    //r.RecalcularClusterFiltradoColaborativoItem();
+                    moviesid = r.FiltradoColaborativoBasadoItem(userid);
+                    movies = db.getMoviesById(moviesid);
+                    sesion.setAttribute("movies", movies);
                     break;
-                case "FS": //Filtrado supervisado
+                case "FS": //Aprendizaje supervisado
+                    moviesid = r.AprendizajeSupervisado(userid);
+                    movies = db.getMoviesById(moviesid);
+                    sesion.setAttribute("movies", movies);
                     break;
                 default:
                     break;

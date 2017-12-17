@@ -75,9 +75,4 @@
         <servlet-name>MetodoServlet</servlet-name>
         <url-pattern>/MetodoServlet</url-pattern>
     </servlet-mapping>
-    <session-config>
-        <session-timeout>
-            300
-        </session-timeout>
-    </session-config>
 </web-app>

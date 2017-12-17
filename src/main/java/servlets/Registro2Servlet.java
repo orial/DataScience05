@@ -6,9 +6,11 @@
 package servlets;
 
 import auxiliar.DBHelper;
+import auxiliar.Movie;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -79,8 +81,14 @@ public class Registro2Servlet extends HttpServlet {
                 //Usuario creado
                 request.setAttribute("ok", "Usuario "+nick+" creado correctamente");
                 sesion.invalidate(); //Eliminamos los atributos de sesión
+                //Y redireccionamos a Welcome.jsp
+                sesion.setAttribute("user", nick);
+                String userid = db.getIDUsuario(nick);
+                sesion.setAttribute("userid", userid);
+                List<Movie> movies = db.getRecommendationByGenres(clusters);
+                sesion.setAttribute("movies", movies);
                 RequestDispatcher rd;
-                rd = getServletContext().getRequestDispatcher("/Login.jsp");
+                rd = getServletContext().getRequestDispatcher("/Welcome.jsp");
                 rd.forward(request, response);
             }
             

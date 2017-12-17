@@ -14,6 +14,11 @@ public class Movie {
     private String title;
     private String poster;
     private float rating;
+    private String year;
+    private String runtime;
+    private String director;
+    private String actors;
+    private String plot;
     
     public Movie(int id){
         this.id = id;
@@ -84,5 +89,75 @@ public class Movie {
      */
     public void setRating(float rating) {
         this.rating = rating;
+    }
+
+    /**
+     * @return the year
+     */
+    public String getYear() {
+        return year;
+    }
+
+    /**
+     * @param year the year to set
+     */
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    /**
+     * @return the runtime
+     */
+    public String getRuntime() {
+        return runtime;
+    }
+
+    /**
+     * @param runtime the runtime to set
+     */
+    public void setRuntime(String runtime) {
+        this.runtime = runtime;
+    }
+
+    /**
+     * @return the director
+     */
+    public String getDirector() {
+        return director;
+    }
+
+    /**
+     * @param director the director to set
+     */
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    /**
+     * @param actors the actors to set
+     */
+    public void setActors(String actors) {
+        this.actors = actors;
+    }
+
+    /**
+     * @return the plot
+     */
+    public String getPlot() {
+        return plot;
+    }
+
+    /**
+     * @param plot the plot to set
+     */
+    public void setPlot(String plot) {
+        this.plot = plot;
+    }
+
+    /**
+     * @return the actors
+     */
+    public String getActors() {
+        return actors;
     }
 }

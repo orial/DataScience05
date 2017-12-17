@@ -7,6 +7,7 @@ package servlets;
 
 import auxiliar.DBHelper;
 import auxiliar.Movie;
+import auxiliar.RHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpSession;
 public class MetodoServlet extends HttpServlet {
     
     private DBHelper db = new DBHelper();
+    private RHelper r = new RHelper();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,26 +42,43 @@ public class MetodoServlet extends HttpServlet {
         String method = request.getParameter("metodo");
         db.modifyMethod(userid, method); //Se modifica el método del usuario
         List<Movie> movies;
-            switch (method){
-                case "GR": //Grupos resultantes de la clusterización
-                    String clusters = db.getUserClusters(userid);
-                    movies = db.getRecommendationByGenres(clusters);
-                    sesion.setAttribute("movies", movies);
-                    break;
-                case "CO": //Filtrado basado en contenido
-                    break;
-                case "CU": //Filtrado colaborativo basado en usuario
-                    break;
-                case "CI": //Filtrado colaborativo basado en item
-                    break;
-                case "FS": //Filtrado supervisado
-                    break;
-                default:
-                    break;
-            }
-            RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/Welcome.jsp");
-            rd.forward(request, response);
+        int[] moviesid;
+        switch (method){
+            case "GR": //Grupos resultantes de la clusterización
+                String clusters = db.getUserClusters(userid);
+                movies = db.getRecommendationByGenres(clusters);
+                sesion.setAttribute("movies", movies);
+                break;
+            case "CO": //Filtrado basado en contenido
+                moviesid = r.BasadoContenido(userid);
+                movies = db.getMoviesById(moviesid);
+                sesion.setAttribute("movies", movies);
+                break;
+            case "CU": //Filtrado colaborativo basado en usuario
+                //Se comenta porque tarda mucho en tiempo de ejecución
+                //r.RecalcularClusterFiltradoColaborativoUser();
+                moviesid = r.FiltradoColaborativoBasadoUsuario(userid);
+                movies = db.getMoviesById(moviesid);
+                sesion.setAttribute("movies", movies);
+                break;
+            case "CI": //Filtrado colaborativo basado en item
+                //Se comenta porque tarda mucho en tiempo de ejecución
+                //r.RecalcularClusterFiltradoColaborativoItem();
+                moviesid = r.FiltradoColaborativoBasadoItem(userid);
+                movies = db.getMoviesById(moviesid);
+                sesion.setAttribute("movies", movies);
+                break;
+            case "FS": //Aprendizaje supervisado
+                moviesid = r.AprendizajeSupervisado(userid);
+                movies = db.getMoviesById(moviesid);
+                sesion.setAttribute("movies", movies);
+                break;
+            default:
+                break;
+        }
+        RequestDispatcher rd;
+        rd = getServletContext().getRequestDispatcher("/Welcome.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

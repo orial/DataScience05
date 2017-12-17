@@ -49,6 +49,15 @@
                                         <td><b>Año: </b><c:out value="${requestScope.year}"/></td>
                                     </tr>
                                     <tr>
+                                        <td><b>Duración: </b><c:out value="${requestScope.duracion}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Director: </b><c:out value="${requestScope.director}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Reparto: </b><c:out value="${requestScope.reparto}"/></td>
+                                    </tr>
+                                    <tr>
                                         <%  String movieid = (String)request.getAttribute("movieid");
                                             String rating = db.getMovieMeanVal(movieid);
                                             System.out.println(rating);

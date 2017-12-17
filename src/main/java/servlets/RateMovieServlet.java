@@ -6,6 +6,8 @@
 package servlets;
 
 import auxiliar.DBHelper;
+import auxiliar.Movie;
+import auxiliar.OMDBHelper;
 import auxiliar.TMDBHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,7 +25,8 @@ import javax.servlet.http.HttpSession;
 public class RateMovieServlet extends HttpServlet {
 
     private DBHelper db = new DBHelper();
-    private TMDBHelper tmdbhelper = new TMDBHelper();
+    //private TMDBHelper tmdbhelper = new TMDBHelper();
+    private OMDBHelper omdb = new OMDBHelper();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,17 +40,17 @@ public class RateMovieServlet extends HttpServlet {
             throws ServletException, IOException {
         String movieid = request.getParameter("movieid");
         //Link de la pelicula en tmdb
-        String link = db.getMovieLink(movieid);
-        //Recuperamos titulo, poster, resumen y año
-        String titulo = tmdbhelper.getMovieTitle(link);
-        String poster = tmdbhelper.getMovieImage(link);
-        String resumen = tmdbhelper.getMovieOverview(link);
-        String year = tmdbhelper.getMovieYear(link);
+        String link = db.getIMDBLink(movieid);
+        //Recuperamos la película
+        Movie m = omdb.getMovieFullInfo(Integer.parseInt(movieid), link);
         
-        request.setAttribute("titulo", titulo);
-        request.setAttribute("poster", poster);
-        request.setAttribute("resumen", resumen);
-        request.setAttribute("year", year);
+        request.setAttribute("titulo", m.getTitle());
+        request.setAttribute("poster", m.getPoster());
+        request.setAttribute("resumen", m.getPlot());
+        request.setAttribute("year", m.getYear());
+        request.setAttribute("duracion", m.getRuntime());
+        request.setAttribute("director", m.getDirector());
+        request.setAttribute("reparto", m.getActors());
         request.setAttribute("movieid", movieid);
         //request.setAttribute("rating",db.getMovieMeanVal(movieid));
         //request.setAttribute("myrating", db.getMovieRatedByUser(userid, movieid));

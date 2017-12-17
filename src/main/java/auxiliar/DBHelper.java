@@ -31,7 +31,8 @@ public class DBHelper {
     final String userName = "root";
     final String password = "root";
     
-    private TMDBHelper tmdbhelper = new TMDBHelper();
+    //private TMDBHelper tmdbhelper = new TMDBHelper();
+    private OMDBHelper omdb = new OMDBHelper();
     //USERS
     
     public boolean existsNickname(String nickname){
@@ -159,13 +160,13 @@ public class DBHelper {
             Class.forName(driver).newInstance();
             Connection c = DriverManager.getConnection(url + dbName, userName, password);
             
-            PreparedStatement stmt = c.prepareStatement("SELECT TMDBID FROM LINK WHERE MOVIEID = ?");
+            PreparedStatement stmt = c.prepareStatement("SELECT IMDBID FROM LINK WHERE MOVIEID = ?");
             stmt.setString(1, id);
             
             ResultSet rs = stmt.executeQuery();
             if(rs.next()){
-                String tmdb = rs.getString("TMDBID");
-                poster = tmdbhelper.getMovieImage(tmdb);
+                String link = rs.getString("IMDBID");
+                poster = omdb.getMovieImage(link);
             }
             
             rs.close();
@@ -188,19 +189,14 @@ public class DBHelper {
             while(rs.next()){
                 //Id de la pelicula
                 String id = rs.getString("MOVIEID");
-                //Titulo de la pelicula
-                String title = tmdbhelper.getMovieTitle(this.getMovieLink(id));
-                //Poster de la pelicula
-                String poster = this.getMoviePoster(id);
-                //Media de las valoraciones
+                //Recuperamos los datos de la pelicula
+                aux = omdb.getMovie(Integer.parseInt(id), this.getIMDBLink(id));
                 String media = rs.getString("mean_ratings");
                 //Solo dos decimales
                 if(media.length()>4){
                     media = media.substring(0, 4);
                 }
-                //Creamos la pelicula
-                aux = new Movie(Integer.parseInt(id), title, poster, Float.parseFloat(media));
-                //Y la añadimos al set
+                aux.setRating(Float.parseFloat(media));
                 movies.add(aux);
             }
             
@@ -212,7 +208,7 @@ public class DBHelper {
         return movies;
     }
     
-    public String getMovieLink(String id){
+    public String getTMDBLink(String id){
         String link="";
         try{
             Class.forName(driver).newInstance();
@@ -362,19 +358,14 @@ public class DBHelper {
             while(rs.next()){
                 //Id de la pelicula
                 String id = rs.getString("ini.movieId");
-                //Titulo de la pelicula
-                String title = tmdbhelper.getMovieTitle(this.getMovieLink(id));
-                //Poster de la pelicula
-                String poster = this.getMoviePoster(id);
-                //Media de las valoraciones
+                //Recuperamos los datos de la pelicula
+                aux = omdb.getMovie(Integer.parseInt(id), this.getIMDBLink(id));
                 String media = rs.getString("media");
                 //Solo dos decimales
                 if(media.length()>4){
                     media = media.substring(0, 4);
                 }
-                //Creamos la pelicula
-                aux = new Movie(Integer.parseInt(id), title, poster, Float.parseFloat(media));
-                //Y la añadimos al set
+                aux.setRating(Float.parseFloat(media));
                 movies.add(aux);
             }
             
@@ -418,19 +409,14 @@ public class DBHelper {
                 while(rs.next() && cont<=e.getValue()){
                     //Id de la pelicula
                     String id = rs.getString("ini.movieId");
-                    //Titulo de la pelicula
-                    String title = tmdbhelper.getMovieTitle(this.getMovieLink(id));
-                    //Poster de la pelicula
-                    String poster = this.getMoviePoster(id);
-                    //Media de las valoraciones
+                    //Recuperamos los datos de la pelicula
+                    aux = omdb.getMovie(Integer.parseInt(id), this.getIMDBLink(id));
                     String media = rs.getString("media");
                     //Solo dos decimales
                     if(media.length()>4){
                         media = media.substring(0, 4);
                     }
-                    //Creamos la pelicula
-                    aux = new Movie(Integer.parseInt(id), title, poster, Float.parseFloat(media));
-                    //Y la añadimos al set
+                    aux.setRating(Float.parseFloat(media));
                     movies.add(aux);
                     cont++;
                 }
@@ -598,5 +584,37 @@ public class DBHelper {
             System.err.println("Exception: "+ e.getMessage());
         }
         return res;
+    }
+    
+    public List<Movie> getMoviesById(int[] ids){
+        List <Movie> movies = new ArrayList<Movie>();
+        Movie aux;
+        try {
+            Class.forName(driver).newInstance();
+            Connection c = DriverManager.getConnection(url + dbName, userName, password);
+            for(int i=0; i<ids.length; i++){
+                //Link de la película
+                String link = this.getIMDBLink(String.valueOf(ids[i]));
+                aux = omdb.getMovie(ids[i], link);
+                PreparedStatement stmt = c.prepareStatement("SELECT sum(RATING.RATING)/COUNT(*) AS mean_ratings FROM RATING WHERE MOVIEID = ? GROUP BY RATING.MOVIEID  ORDER BY mean_ratings");
+                stmt.setString(1, String.valueOf(ids[i]));
+                ResultSet rs = stmt.executeQuery();
+                
+                while(rs.next()){
+                    String res = rs.getString("mean_ratings");
+                    if(res.length()>4){
+                        res = res.substring(0, 4);
+                    }
+                    aux.setRating(Float.parseFloat(res));
+                    movies.add(aux);
+                }
+
+                rs.close();
+                stmt.close();
+            }
+        }catch (Exception e) {
+            System.err.println("Exception: "+ e.getMessage());
+        }
+        return movies;
     }
 }

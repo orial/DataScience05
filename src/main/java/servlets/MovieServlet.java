@@ -6,6 +6,8 @@
 package servlets;
 
 import auxiliar.DBHelper;
+import auxiliar.Movie;
+import auxiliar.OMDBHelper;
 import auxiliar.TMDBHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,7 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 public class MovieServlet extends HttpServlet {
     
     private DBHelper db = new DBHelper();
-    private TMDBHelper tmdbhelper = new TMDBHelper();
+    //private TMDBHelper tmdbhelper = new TMDBHelper();
+    private OMDBHelper omdb = new OMDBHelper();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,17 +42,17 @@ public class MovieServlet extends HttpServlet {
         System.out.println(rating);
         
         //Link de la pelicula en tmdb
-        String link = db.getMovieLink(movieid);
+        String link = db.getIMDBLink(movieid);
         //Recuperamos titulo, poster, resumen y año
-        String titulo = tmdbhelper.getMovieTitle(link);
-        String poster = tmdbhelper.getMovieImage(link);
-        String resumen = tmdbhelper.getMovieOverview(link);
-        String year = tmdbhelper.getMovieYear(link);
+        Movie m = omdb.getMovieFullInfo(Integer.parseInt(movieid), link);
         
-        request.setAttribute("titulo", titulo);
-        request.setAttribute("poster", poster);
-        request.setAttribute("resumen", resumen);
-        request.setAttribute("year", year);
+        request.setAttribute("titulo", m.getTitle());
+        request.setAttribute("poster", m.getPoster());
+        request.setAttribute("sinopsis", m.getPlot());
+        request.setAttribute("year", m.getYear());
+        request.setAttribute("duracion", m.getRuntime());
+        request.setAttribute("director", m.getDirector());
+        request.setAttribute("reparto", m.getActors());
         request.setAttribute("rating", rating);
         RequestDispatcher rd;
         rd = getServletContext().getRequestDispatcher("/MovieDetails.jsp");
