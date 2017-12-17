@@ -86,7 +86,7 @@ public class Registro2Servlet extends HttpServlet {
                 sesion.setAttribute("user", nick);
                 String userid = db.getIDUsuario(nick);
                 sesion.setAttribute("userid", userid);
-                List<Movie> movies = db.getRecommendationByGenres(clusters);
+                List<Movie> movies = db.getRecommendationByGenres(clusters, userid);
                 sesion.setAttribute("movies", movies);
                 RequestDispatcher rd;
                 rd = getServletContext().getRequestDispatcher("/Welcome.jsp");

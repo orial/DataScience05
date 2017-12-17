@@ -377,7 +377,7 @@ public class DBHelper {
         return movies;
     }
     
-    public List<Movie> getRecommendationByGenres(String clusters){
+    public List<Movie> getRecommendationByGenres(String clusters, String userid){
         Map<String,Integer> puntuaciones = new HashMap<String,Integer>();
         StringTokenizer st = new StringTokenizer(clusters,"-");
         String c1=st.nextToken(),c2=st.nextToken(),c3=st.nextToken();
@@ -409,16 +409,19 @@ public class DBHelper {
                 while(rs.next() && cont<=e.getValue()){
                     //Id de la pelicula
                     String id = rs.getString("ini.movieId");
-                    //Recuperamos los datos de la pelicula
-                    aux = omdb.getMovie(Integer.parseInt(id), this.getIMDBLink(id));
-                    String media = rs.getString("media");
-                    //Solo dos decimales
-                    if(media.length()>4){
-                        media = media.substring(0, 4);
-                    }
-                    aux.setRating(Float.parseFloat(media));
-                    movies.add(aux);
-                    cont++;
+                    //Chequear si ya ha valorado esa película
+                    if(this.getMovieRatedByUser(userid, id)==0f){
+                        //No la ha valorado, recuperamos los datos de la pelicula
+                        aux = omdb.getMovie(Integer.parseInt(id), this.getIMDBLink(id));
+                        String media = rs.getString("media");
+                        //Solo dos decimales
+                        if(media.length()>4){
+                            media = media.substring(0, 4);
+                        }
+                        aux.setRating(Float.parseFloat(media));
+                        movies.add(aux);
+                        cont++;
+                    } 
                 }
 
                 rs.close();

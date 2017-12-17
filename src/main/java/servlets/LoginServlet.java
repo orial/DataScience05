@@ -60,7 +60,7 @@ public class LoginServlet extends HttpServlet {
             switch (method){
                 case "GR": //Grupos resultantes de la clusterización
                     String clusters = db.getUserClusters(userid);
-                    movies = db.getRecommendationByGenres(clusters);
+                    movies = db.getRecommendationByGenres(clusters, userid);
                     sesion.setAttribute("movies", movies);
                     break;
                 case "CO": //Filtrado basado en contenido
