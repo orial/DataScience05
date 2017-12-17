@@ -82,6 +82,7 @@ public class Registro2Servlet extends HttpServlet {
                 request.setAttribute("ok", "Usuario "+nick+" creado correctamente");
                 sesion.invalidate(); //Eliminamos los atributos de sesión
                 //Y redireccionamos a Welcome.jsp
+                sesion = request.getSession();
                 sesion.setAttribute("user", nick);
                 String userid = db.getIDUsuario(nick);
                 sesion.setAttribute("userid", userid);
