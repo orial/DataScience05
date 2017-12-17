@@ -9,6 +9,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="auxiliar.Movie"%>
 <%@page import="java.util.List"%>
+<%@page import="auxiliar.DBHelper"%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -17,10 +18,24 @@
         <title>Movie Recommender</title>
     </head>
     <body>
+        <%
+            DBHelper db = new DBHelper();
+            HttpSession sesion = request.getSession();
+            String userid = (String)sesion.getAttribute("userid");
+            int vals = db.getUserValorations(userid);
+            if(vals>=20){
+        %>
         <%@include file="Header2.jspf" %>
+        <%        
+            }else{
+        %>        
+        <%@include file="Header2Pre.jspf" %>
+        <%
+            }
+        %>
         <div><p style="color: green"><c:out value="${requestScope.ok}"/></p></div>
         <h1>Te recomendamos estas películas</h1>
-        <%  HttpSession sesion = request.getSession();
+        <%  
             List<Movie> movies = (List<Movie>)sesion.getAttribute("movies");
             for(Movie m : movies){
         %>

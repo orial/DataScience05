@@ -1,4 +1,4 @@
-<%-- Para Welcome.jsp: --%>
+<%-- Para Welcome.jsp y RateMovie.jsp: --%>
 <%@ page pageEncoding="UTF-8" %>
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -14,7 +14,7 @@
               <li><a href="MetodoServlet?metodo=CO">Filtrado basado en contenido</a></li>
               <li><a href="MetodoServlet?metodo=CU">Filtrado colaborativo basado en usuario</a></li>
               <li><a href="MetodoServlet?metodo=CI">Filtrado colaborativo basado en item</a></li>
-              <li><a href="MetodoServlet?metodo=FS">Filtrado supervisado</a></li>
+              <li><a href="MetodoServlet?metodo=FS">Filtrado aprendizaje supervisado</a></li>
             </ul>
         </li>
         <li><a href="LogoutServlet"><span class="glyphicon glyphicon-log-out"></span> Cerrar sesión</a></li>

@@ -234,6 +234,52 @@ public class DBHelper {
         return link;
     }
     
+    public String getIMDBLink(String id){
+        String link="";
+        try{
+            Class.forName(driver).newInstance();
+            Connection c = DriverManager.getConnection(url + dbName, userName, password);
+            
+            PreparedStatement stmt = c.prepareStatement("SELECT IMDBID FROM LINK WHERE MOVIEID = ?");
+            stmt.setString(1, id);
+            
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                link = rs.getString("IMDBID");
+                //Hay que completar con ceros a la izquierda hasta que el id tenga 7 dígitos y delante 'tt'
+                switch (link.length()){
+                    case 1:
+                        link = "tt000000"+link;
+                        break;
+                    case 2:
+                        link = "tt00000"+link;
+                        break;
+                    case 3:
+                        link = "tt0000"+link;
+                        break;
+                    case 4:
+                        link = "tt000"+link;
+                        break;
+                    case 5:
+                        link = "tt00"+link;
+                        break;
+                    case 6:
+                        link = "tt0"+link;
+                        break;
+                    case 7:
+                        link = "tt"+link;
+                        break;
+                }
+            }
+            
+            rs.close();
+            stmt.close();
+        }catch (Exception e){
+            System.err.println("Exception: "+ e.getMessage());
+        }
+        return link;
+    }
+    
     public Movie getMovieRanking(String movieid){
         Movie movie = new Movie(Integer.parseInt(movieid));
         try{
@@ -531,5 +577,26 @@ public class DBHelper {
         }catch (Exception e) {
             System.err.println("Exception: "+ e.getMessage());
         }
+    }
+    
+    public int getUserValorations(String userid){
+        int res = 0;
+        try {
+            Class.forName(driver).newInstance();
+            Connection c = DriverManager.getConnection(url + dbName, userName, password);
+            PreparedStatement stmt = c.prepareStatement("SELECT COUNT(*) AS Vals FROM RATING WHERE USERID = ?");
+            stmt.setString(1, userid);
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()){
+                res = rs.getInt("Vals");
+            }
+            
+            rs.close();
+            stmt.close();
+        }catch (Exception e) {
+            System.err.println("Exception: "+ e.getMessage());
+        }
+        return res;
     }
 }

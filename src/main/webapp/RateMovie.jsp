@@ -16,7 +16,21 @@
         <title><c:out value="${requestScope.titulo}"/></title>
     </head>
     <body>
+        <%
+            DBHelper db = new DBHelper();
+            HttpSession sesion = request.getSession();
+            String userid = (String)sesion.getAttribute("userid");
+            int vals = db.getUserValorations(userid);
+            if(vals>=20){
+        %>
         <%@include file="Header2.jspf" %>
+        <%        
+            }else{
+        %>        
+        <%@include file="Header2Pre.jspf" %>
+        <%
+            }
+        %>
         <div class="container theme-showcase" role="main">
             <div class="panel panel-info">
                 <div class="panel-heading">
@@ -35,10 +49,7 @@
                                         <td><b>Año: </b><c:out value="${requestScope.year}"/></td>
                                     </tr>
                                     <tr>
-                                        <%  DBHelper db = new DBHelper();
-                                            HttpSession sesion = request.getSession();
-                                            String userid = (String)sesion.getAttribute("userid");
-                                            String movieid = (String)request.getAttribute("movieid");
+                                        <%  String movieid = (String)request.getAttribute("movieid");
                                             String rating = db.getMovieMeanVal(movieid);
                                             System.out.println(rating);
                                             Float myrating = db.getMovieRatedByUser(userid, movieid);

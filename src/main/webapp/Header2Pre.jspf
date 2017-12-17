@@ -1,0 +1,12 @@
+<%-- Para Welcome.jsp y RateMovie.jsp: --%>
+<%@ page pageEncoding="UTF-8" %>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+    <a href="Welcome.jsp" class="navbar-brand">Movie Recommender</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="LogoutServlet"><span class="glyphicon glyphicon-log-out"></span> Cerrar sesión</a></li>
+    </ul>
+  </div>
+</nav>

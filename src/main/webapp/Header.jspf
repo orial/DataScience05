@@ -1,4 +1,4 @@
-<%-- Para Home.jsp, Registro.jsp y Login.jsp: --%>
+<%-- Para Home.jsp, MovieDetails.jsp, Registro.jsp, Registro2.jsp y Login.jsp: --%>
 <%@ page pageEncoding="UTF-8" %>
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
